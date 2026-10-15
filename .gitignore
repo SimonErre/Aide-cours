@@ -1,0 +1,26 @@
+# === C++ Build Files ===
+*.exe
+*.o
+*.out
+*.obj
+programme
+*.gch
+*.pch
+
+# === C# / .NET Build Files ===
+bin/
+obj/
+
+# === IDE / Editor Files ===
+.vs/
+.vscode/
+*.user
+*.suo
+*.sln.docstates
+*.userprefs
+
+# === macOS ===
+.DS_Store
+
+# === Windows ===
+Thumbs.db
