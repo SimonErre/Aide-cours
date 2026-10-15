@@ -55,12 +55,4 @@ En C#, l'outil `dotnet` s'occupe de compiler et de lancer le programme en une se
 dotnet run
 ```
 
----
-
-## 💡 3 Règles d'Or pour ne jamais bloquer
-
-1. **Ne fais pas de copier-coller :** Tape chaque ligne avec tes doigts. C'est comme ça que la mémoire musculaire se crée et que tu retiendras où vont les `;` et les `{ }`.
-2. **Les erreurs sont tes amies :** Si le terminal affiche du texte rouge quand tu compiles, **ne panique pas !** Lis le message : il t'indique presque toujours le **numéro de la ligne** où il manque un point-virgule ou une accolade.
-3. **Évite les accents dans les textes affichés au début :** Les terminaux gèrent parfois mal les `é` ou `è` en C++ selon ta configuration. C'est pour cela que les sorties attendues du cahier d'exercices n'ont pas d'accents !
-
 Bon courage, et amuse-toi bien ! 🎮
