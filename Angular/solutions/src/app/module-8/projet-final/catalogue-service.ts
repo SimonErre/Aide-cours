@@ -2,16 +2,16 @@ import { Service } from '@angular/core';
 
 import { Objet } from './objet';
 
-/** Items sold at the market. */
+/** Items sold at the shop. */
 @Service()
 export class CatalogueService {
   readonly objets: readonly Objet[] = [
-    { id: 1, nom: 'Epée courte', prix: 40, poids: 3, categorie: 'Armes' },
-    { id: 2, nom: 'Bouclier en chêne', prix: 30, poids: 5, categorie: 'Armures' },
-    { id: 3, nom: 'Arc long', prix: 55, poids: 2, categorie: 'Armes' },
-    { id: 4, nom: 'Cotte de mailles', prix: 90, poids: 12, categorie: 'Armures' },
-    { id: 5, nom: 'Potion de soin', prix: 15, poids: 0.5, categorie: 'Potions' },
-    { id: 6, nom: 'Elixir de force', prix: 35, poids: 0.5, categorie: 'Potions' },
+    { id: 1, nom: 'Skin Tralalero', prix: 40, taille: 3, categorie: 'Skins' },
+    { id: 2, nom: 'Skin Bombardiro', prix: 30, taille: 5, categorie: 'Skins' },
+    { id: 3, nom: 'Emote Mewing', prix: 55, taille: 2, categorie: 'Emotes' },
+    { id: 4, nom: 'Emote Tung Tung', prix: 90, taille: 12, categorie: 'Emotes' },
+    { id: 5, nom: 'Boost Aura x2', prix: 15, taille: 0.5, categorie: 'Boosts' },
+    { id: 6, nom: 'Boost Rizz', prix: 35, taille: 0.5, categorie: 'Boosts' },
   ];
 
   trouver(id: number): Objet | undefined {

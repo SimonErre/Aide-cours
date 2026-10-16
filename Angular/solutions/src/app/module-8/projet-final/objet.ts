@@ -1,9 +1,9 @@
-export type Categorie = 'Armes' | 'Armures' | 'Potions';
+export type Categorie = 'Skins' | 'Emotes' | 'Boosts';
 
 export interface Objet {
   id: number;
   nom: string;
   prix: number;
-  poids: number;
+  taille: number;
   categorie: Categorie;
 }

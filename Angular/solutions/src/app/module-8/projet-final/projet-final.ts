@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
-import { HerosService } from './heros-service';
-import { SacService } from './sac-service';
+import { InventaireService } from './inventaire-service';
+import { ProfilService } from './profil-service';
 
 /** Mini-app root: permanent header, navigation and page outlet. */
 @Component({
@@ -11,17 +11,17 @@ import { SacService } from './sac-service';
   template: `
     <header>
       <p>
-        @if (heros.estCree()) {
-          <strong>{{ heros.nom() }} le {{ heros.classe() }}</strong> |
+        @if (profil.estCree()) {
+          <strong>{{ profil.nom() }} (team {{ profil.team() }})</strong> |
         }
-        💰 {{ heros.or() }} or | 🎒 {{ sac.contenu().length }} objets
+        💰 {{ profil.credits() }} crédits | 📱 {{ inventaire.contenu().length }} objets
       </p>
       <nav>
         <a routerLink="." routerLinkActive="actif" [routerLinkActiveOptions]="{ exact: true }">
-          Accueil
+          Profil
         </a>
-        <a routerLink="marche" routerLinkActive="actif">Marché</a>
-        <a routerLink="sac" routerLinkActive="actif">Sac</a>
+        <a routerLink="shop" routerLinkActive="actif">Shop</a>
+        <a routerLink="inventaire" routerLinkActive="actif">Inventaire</a>
       </nav>
     </header>
     <hr />
@@ -38,6 +38,6 @@ import { SacService } from './sac-service';
   `,
 })
 export class ProjetFinal {
-  protected readonly heros = inject(HerosService);
-  protected readonly sac = inject(SacService);
+  protected readonly profil = inject(ProfilService);
+  protected readonly inventaire = inject(InventaireService);
 }

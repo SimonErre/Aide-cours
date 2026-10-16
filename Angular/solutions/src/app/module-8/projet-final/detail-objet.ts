@@ -1,9 +1,9 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { SelecteurQuantite } from '../../module-4/ex-4-3-comptoir/selecteur-quantite';
+import { SelecteurQuantite } from '../../module-4/ex-4-3-commande/selecteur-quantite';
 import { CatalogueService } from './catalogue-service';
-import { SacService } from './sac-service';
+import { InventaireService } from './inventaire-service';
 
 @Component({
   imports: [SelecteurQuantite],
@@ -11,27 +11,30 @@ import { SacService } from './sac-service';
   template: `
     @if (objet(); as objet) {
       <h2>{{ objet.nom }}</h2>
-      <p>Catégorie : {{ objet.categorie }} | Poids : {{ objet.poids }} kg | Prix : {{ objet.prix }} or</p>
+      <p>
+        Catégorie : {{ objet.categorie }} | Taille : {{ objet.taille }} Go | Prix :
+        {{ objet.prix }} crédits
+      </p>
 
       <app-selecteur-quantite [(quantite)]="quantite" />
-      <span>Total : {{ total() }} or</span>
+      <span>Total : {{ total() }} crédits</span>
       <br />
       <button [disabled]="!peutAcheter()" (click)="acheter()">Acheter</button>
       @if (!peutAcheter()) {
-        <p>Pas assez d'or ou sac trop lourd ({{ sac.poidsMax }} kg max).</p>
+        <p>Pas assez de crédits ou stockage plein ({{ inventaire.stockageMax }} Go max).</p>
       }
     } @else {
       <p>Objet inconnu.</p>
     }
     <br />
-    <button (click)="retour()">Retour au marché</button>
+    <button (click)="retour()">Retour au shop</button>
   `,
 })
 export class DetailObjet {
   /** Filled from the ':id' route param thanks to withComponentInputBinding(). */
   readonly id = input.required<string>();
 
-  protected readonly sac = inject(SacService);
+  protected readonly inventaire = inject(InventaireService);
   private readonly catalogue = inject(CatalogueService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -42,7 +45,7 @@ export class DetailObjet {
 
   protected readonly peutAcheter = computed(() => {
     const objet = this.objet();
-    return objet !== undefined && this.sac.peutAcheter(objet, this.quantite());
+    return objet !== undefined && this.inventaire.peutAcheter(objet, this.quantite());
   });
 
   protected acheter() {
@@ -52,7 +55,7 @@ export class DetailObjet {
       return;
     }
 
-    this.sac.acheter(objet, this.quantite());
+    this.inventaire.acheter(objet, this.quantite());
     this.quantite.set(1);
   }
 

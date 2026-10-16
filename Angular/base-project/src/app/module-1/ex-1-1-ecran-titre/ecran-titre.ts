@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
   selector: 'app-ecran-titre',
   template: `
     <!-- TODO : affiche l'écran-titre (balise <pre> pour garder les espaces) -->
-    <!-- TODO : affiche "Appuie sur Start pour commencer" -->
+    <!-- TODO : affiche "Appuie sur Start pour farmer de l'aura" -->
   `,
   styles: `
     /* TODO (bonus) : centre le texte et grossis le titre */

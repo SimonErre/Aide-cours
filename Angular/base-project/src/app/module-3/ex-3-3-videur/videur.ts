@@ -1,21 +1,21 @@
 import { Component } from '@angular/core';
 
 // =============================================================
-// Exercice 3.3 : Le videur de la taverne
+// Exercice 3.3 : Le videur du club des sigmas
 // Objectif : @if / @else.
 // =============================================================
 
-const NIVEAU_REQUIS = 10;
+const AURA_REQUISE = 10;
 
 @Component({
   selector: 'app-videur',
   template: `
-    <!-- TODO : "Ton niveau : X" et boutons Niveau +1 / Niveau -1 -->
-    <!-- TODO : @if niveau >= 10, sinon message de refus -->
+    <!-- TODO : "Ton niveau d'aura : X" et boutons Aura +1 / Aura -1 -->
+    <!-- TODO : @if aura >= 10, sinon message de refus -->
   `,
 })
 export class Videur {
-  protected readonly niveauRequis = NIVEAU_REQUIS;
+  protected readonly auraRequise = AURA_REQUISE;
 
-  // TODO : signal niveau (4) et méthode pour le changer
+  // TODO : signal aura (4) et méthode pour le changer
 }

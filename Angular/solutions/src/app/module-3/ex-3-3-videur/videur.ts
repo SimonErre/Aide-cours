@@ -1,27 +1,27 @@
 import { Component, signal } from '@angular/core';
 
-const NIVEAU_DEPART = 4;
-const NIVEAU_REQUIS = 10;
+const AURA_DEPART = 4;
+const AURA_REQUISE = 10;
 
 @Component({
   selector: 'app-videur',
   template: `
-    <p>Ton niveau : {{ niveau() }}</p>
-    <button (click)="changerNiveau(1)">Niveau +1</button>
-    <button (click)="changerNiveau(-1)">Niveau -1</button>
+    <p>Ton niveau d'aura : {{ aura() }}</p>
+    <button (click)="changerAura(1)">Aura +1</button>
+    <button (click)="changerAura(-1)">Aura -1</button>
 
-    @if (niveau() >= niveauRequis) {
-      <p>Entre donc, grand guerrier !</p>
+    @if (aura() >= auraRequise) {
+      <p>Bienvenue au club des sigmas 🗿</p>
     } @else {
-      <p>Désolé gamin, il faut être au moins niveau {{ niveauRequis }}.</p>
+      <p>Désolé chef, il faut au moins {{ auraRequise }} d'aura. Reviens plus tard.</p>
     }
   `,
 })
 export class Videur {
-  protected readonly niveauRequis = NIVEAU_REQUIS;
-  protected readonly niveau = signal(NIVEAU_DEPART);
+  protected readonly auraRequise = AURA_REQUISE;
+  protected readonly aura = signal(AURA_DEPART);
 
-  protected changerNiveau(delta: number) {
-    this.niveau.update((niveau) => Math.max(1, niveau + delta));
+  protected changerAura(delta: number) {
+    this.aura.update((aura) => Math.max(0, aura + delta));
   }
 }

@@ -1,20 +1,20 @@
 import { Routes } from '@angular/router';
 
-import { CreationHeros } from './creation-heros';
+import { CreationProfil } from './creation-profil';
 import { DetailObjet } from './detail-objet';
-import { Marche } from './marche';
+import { InventairePage } from './inventaire-page';
 import { PageIntrouvable } from './page-introuvable';
-import { SacPage } from './sac-page';
+import { Shop } from './shop';
 
 export const PROJET_FINAL_ROUTES: Routes = [
-  { path: '', component: CreationHeros },
+  { path: '', component: CreationProfil },
   {
-    path: 'marche',
+    path: 'shop',
     children: [
-      { path: '', component: Marche },
+      { path: '', component: Shop },
       { path: ':id', component: DetailObjet },
     ],
   },
-  { path: 'sac', component: SacPage },
+  { path: 'inventaire', component: InventairePage },
   { path: '**', component: PageIntrouvable },
 ];

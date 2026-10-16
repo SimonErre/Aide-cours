@@ -5,10 +5,9 @@ import { Component } from '@angular/core';
   template: `
     <pre>
 ==============================
-   LA LEGENDE DU CODEUR
-==============================</pre
-    >
-    <p>Appuie sur Start pour commencer</p>
+     SKIBIDI  CODEUR
+==============================</pre>
+    <p>Appuie sur Start pour farmer de l'aura</p>
   `,
   styles: `
     :host {

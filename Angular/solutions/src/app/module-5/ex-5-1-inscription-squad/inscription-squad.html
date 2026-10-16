@@ -1,0 +1,52 @@
+<form (submit)="soumettre($event)">
+  <label>
+    Pseudo :
+    <input [formField]="formulaire.pseudo" />
+  </label>
+  @if (formulaire.pseudo().touched() && formulaire.pseudo().invalid()) {
+    @for (erreur of formulaire.pseudo().errors(); track erreur.kind) {
+      <p class="erreur">⚠ {{ erreur.message }}</p>
+    }
+  }
+
+  <label>
+    Email :
+    <input type="email" [formField]="formulaire.email" />
+  </label>
+  @if (formulaire.email().touched() && formulaire.email().invalid()) {
+    @for (erreur of formulaire.email().errors(); track erreur.kind) {
+      <p class="erreur">⚠ {{ erreur.message }}</p>
+    }
+  }
+
+  <label>
+    Niveau :
+    <input type="number" [formField]="formulaire.niveau" />
+  </label>
+  @if (formulaire.niveau().touched() && formulaire.niveau().invalid()) {
+    @for (erreur of formulaire.niveau().errors(); track erreur.kind) {
+      <p class="erreur">⚠ {{ erreur.message }}</p>
+    }
+  }
+
+  <label>
+    Team :
+    <select [formField]="formulaire.team">
+      <option value="">-- Choisir --</option>
+      @for (team of teams; track team) {
+        <option [value]="team">{{ team }}</option>
+      }
+    </select>
+  </label>
+  @if (formulaire.team().touched() && formulaire.team().invalid()) {
+    @for (erreur of formulaire.team().errors(); track erreur.kind) {
+      <p class="erreur">⚠ {{ erreur.message }}</p>
+    }
+  }
+
+  <button type="submit" [disabled]="formulaire().invalid()">Rejoindre la squad</button>
+</form>
+
+@if (bienvenue()) {
+  <p class="bienvenue">{{ bienvenue() }}</p>
+}

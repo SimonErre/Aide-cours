@@ -6,7 +6,7 @@ import { Objet } from './objet';
   selector: 'app-carte-objet',
   template: `
     <h3>{{ objet().nom }}</h3>
-    <p>{{ objet().prix }} or | {{ objet().poids }} kg</p>
+    <p>{{ objet().prix }} crédits | {{ objet().taille }} Go</p>
     <button (click)="voir.emit(objet().id)">Voir</button>
   `,
   styles: `

@@ -1,0 +1,22 @@
+<form (submit)="soumettre($event)">
+  <label>
+    Pseudo :
+    <input [formField]="formulaire.pseudo" />
+  </label>
+  @if (formulaire.pseudo().touched() && formulaire.pseudo().invalid()) {
+    @for (erreur of formulaire.pseudo().errors(); track erreur.kind) {
+      <p class="erreur">⚠ {{ erreur.message }}</p>
+    }
+  }
+
+  <!-- TODO : champ email + erreurs -->
+
+  <!-- TODO : champ niveau (type="number") + erreurs -->
+
+  <!-- TODO : liste déroulante team (@for sur teams) + erreurs -->
+
+  <!-- TODO : bouton désactivé tant que le formulaire est invalide -->
+  <button type="submit">Rejoindre la squad</button>
+</form>
+
+<!-- TODO : message de bienvenue -->
