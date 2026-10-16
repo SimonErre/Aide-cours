@@ -1,34 +1,21 @@
 # Projet 2 : Mon Budget
 
-Tu as fini le premier cahier ? Maintenant on construit **une vraie petite application**, étape par étape : une app de gestion de budget avec **connexion**, **pages protégées**, **ajout de transactions** et **tableau de bord**. Fini les exercices isolés, cette fois tout se tient.
+Tu as fini le premier cahier. Cette fois, **pas d'exercices guidés ni de squelettes** : tu reçois un cahier des charges, à toi de concevoir et de coder l'application. C'est ce qui ressemble le plus à un vrai projet.
 
-## Ce que tu vas apprendre
+**Objectif :** une application de gestion de budget personnel, avec connexion, pages protégées, saisie de transactions et tableau de bord.
 
-| Notion | Déjà vue ? | Doc officielle |
-|---|---|---|
-| Composants, signals, `computed`, `@if` / `@for` | Projet 1 | [Essentials](https://angular.dev/essentials) |
-| Formulaires avec signals | Projet 1 | [Signal Forms](https://angular.dev/essentials/signal-forms) |
-| Services, `inject()` | Projet 1 | [Dependency injection](https://angular.dev/essentials/dependency-injection) |
-| Routage, `routerLink`, routes enfants | Projet 1 | [Routing](https://angular.dev/guide/routing) |
-| **Guards** (pages protégées) | 🆕 | [Route guards](https://angular.dev/guide/routing/route-guards) |
-| **Pipes** (`currency`, `date`) | 🆕 | [Pipes](https://angular.dev/guide/templates/pipes) |
-| **`linkedSignal`** | 🆕 | [linkedSignal](https://angular.dev/guide/signals/linked-signal) |
-| **Persistance** avec `localStorage` | 🆕 | [MDN localStorage](https://developer.mozilla.org/fr/docs/Web/API/Window/localStorage) |
-
-**Règle du jeu :** chaque étape a un **résultat attendu** (captures prises sur le corrigé). Le contenu doit correspondre, le style est déjà fourni.
-
-> ⚠️ **Login pour de faux.** Ici, les comptes sont écrits en dur dans le code (`core/comptes-demo.ts`). C'est parfait pour apprendre, mais **jamais** dans une vraie app : un vrai login vérifie le mot de passe sur un serveur. Tout ce qui est dans le front, n'importe qui peut le lire.
+> ⚠️ **Login pour de faux.** Les comptes sont écrits en dur dans le code (`core/comptes-demo.ts`). C'est acceptable pour apprendre, **jamais** dans une vraie application : un vrai login vérifie le mot de passe sur un serveur, car tout ce qui est dans le front peut être lu par n'importe qui.
 
 ---
 
-## Étape 0 : Lancer le projet
+## 1. Démarrer
 
 ```text
 Angular/projet-2-budget/
-├── base-project/              <- TON projet (// TODO)
-│   ├── SUJET.md               <- ce sujet
-│   └── captures/              <- les résultats attendus
-└── solutions/                 <- le corrigé
+├── base-project/     <- TON projet (presque vide)
+│   ├── SUJET.md      <- ce cahier des charges
+│   └── captures/     <- les maquettes
+└── solutions/        <- une solution possible (à n'ouvrir qu'à la fin !)
 ```
 
 ```bash
@@ -37,240 +24,191 @@ npm install
 ng serve
 ```
 
-Ouvre `http://localhost:4200`. Pour l'instant, tu arrives sur un layout vide : c'est normal, tout reste à coder.
+### Ce qui est fourni
 
-### Ce qui est déjà fourni
+| Fichier | Contenu |
+|---|---|
+| `models/transaction.ts` | Types `Transaction`, `TypeTransaction`, `Categorie` et la liste `CATEGORIES` |
+| `models/utilisateur.ts` | Type `Utilisateur` |
+| `core/comptes-demo.ts` | Les deux comptes de test |
+| `core/stockage.ts` | Service de lecture / écriture JSON dans `localStorage` |
+| `core/date.ts` | `dateDuJour()` : la date locale au format `"2026-10-16"` |
+| `app.config.ts` | Routeur (avec `withComponentInputBinding()`) et formats français pour les pipes |
+| `styles.css` | Styles globaux : classes `.carte`, `.erreur`, `.revenu`, `.depense` |
 
-Prends 10 minutes pour lire ces fichiers avant de commencer :
+Tout le reste (composants, services, guards, routes) est à créer. Utilise la CLI : `ng generate component ...`, `ng generate service ...`, `ng generate guard ...`.
+
+---
+
+## 2. Fonctionnalités attendues
+
+Chaque fonctionnalité est décrite par une **user story** et des **critères d'acceptation**. Une fonctionnalité est terminée quand tous ses critères sont vérifiés.
+
+### F1. Connexion
+
+> En tant qu'utilisateur, je veux me connecter avec mon email et mon mot de passe pour accéder à mon budget.
+
+* [ ] Un formulaire avec email et mot de passe.
+* [ ] Email obligatoire et au bon format ; mot de passe obligatoire, 6 caractères minimum. Les erreurs s'affichent sous le champ concerné, une fois qu'il a été touché.
+* [ ] Le bouton de connexion est désactivé tant que le formulaire est invalide.
+* [ ] Identifiants inconnus : message `Email ou mot de passe incorrect.`
+* [ ] Identifiants corrects : redirection vers le tableau de bord.
+* [ ] La session survit à un rechargement de la page. Le mot de passe n'est **jamais** stocké.
+
+### F2. Déconnexion et pages protégées
+
+> En tant qu'utilisateur, je veux que mes pages ne soient accessibles qu'une fois connecté.
+
+* [ ] Toutes les pages, sauf la connexion et la page 404, exigent d'être connecté. Sinon : redirection vers la connexion.
+* [ ] Un utilisateur déjà connecté qui ouvre la page de connexion est redirigé vers le tableau de bord.
+* [ ] Un en-tête commun à toutes les pages connectées : nom de l'application, navigation, pseudo de l'utilisateur, bouton de déconnexion.
+* [ ] La déconnexion efface la session et ramène à la page de connexion.
+
+### F3. Ajouter une transaction
+
+> En tant qu'utilisateur, je veux enregistrer mes revenus et mes dépenses.
+
+* [ ] Champs : libellé, montant, type (revenu ou dépense), catégorie, date (aujourd'hui par défaut).
+* [ ] Libellé, catégorie et date obligatoires ; montant strictement positif.
+* [ ] Après l'enregistrement, redirection vers la liste des transactions.
+
+### F4. Lister et supprimer les transactions
+
+> En tant qu'utilisateur, je veux voir mes transactions et pouvoir en supprimer.
+
+* [ ] Une ligne par transaction : date (`jj/mm/aaaa`), libellé, catégorie, montant signé au format monétaire (`-600,00 €`, `+1 500,00 €`), en rouge ou en vert.
+* [ ] Triées de la plus récente à la plus ancienne.
+* [ ] Filtres : tout / revenus / dépenses, et recherche sur le libellé.
+* [ ] Un bouton de suppression par ligne.
+* [ ] Liste vide : un message avec un lien vers l'ajout.
+
+### F5. Tableau de bord
+
+> En tant qu'utilisateur, je veux voir où en est mon budget en un coup d'œil.
+
+* [ ] Un message d'accueil avec le pseudo.
+* [ ] Le solde (vert si positif, rouge si négatif), le total des revenus, le total des dépenses.
+* [ ] Un avertissement quand le solde est négatif.
+* [ ] La répartition des dépenses par catégorie : montant, pourcentage et barre proportionnelle, de la plus grosse à la plus petite.
+
+### F6. Données par utilisateur
+
+> En tant qu'utilisateur, je veux retrouver mes transactions, et seulement les miennes.
+
+* [ ] Les transactions sont sauvegardées et retrouvées après un rechargement.
+* [ ] Chaque compte a ses propres transactions : `bob@budget.fr` ne voit pas celles de `alice@budget.fr`.
+* [ ] Changer de compte affiche immédiatement les bonnes données, sans recharger la page.
+
+### F7. Page introuvable
+
+* [ ] Une URL inconnue affiche une page 404 avec un lien de retour.
+
+---
+
+## 3. Contraintes techniques
+
+Ton code doit utiliser :
+
+* des **signals** pour l'état (`signal`, `computed`), pas de variables « nues » ;
+* les **formulaires avec signals** (`@angular/forms/signals`) ;
+* au moins **deux services** injectés avec `inject()` : un pour l'authentification, un pour le budget ;
+* des **guards** (`CanActivateFn`) pour F2 ;
+* au moins **un composant enfant** qui communique avec son parent par `input()` et `output()` ;
+* les **pipes** `currency` et `date` ;
+* le service `Stockage` fourni : aucun composant n'accède directement à `localStorage`.
+
+Et respecter ces règles d'architecture :
 
 ```text
-src/app/
-├── models/
-│   ├── transaction.ts       <- Transaction, Categorie, CATEGORIES
-│   └── utilisateur.ts       <- Utilisateur
-├── core/
-│   ├── comptes-demo.ts      <- les deux comptes de test
-│   ├── stockage.ts          <- lire / écrire dans localStorage (fourni)
-│   ├── date.ts              <- date du jour au format "2026-10-16" (fourni)
-│   ├── auth-service.ts      <- étape 1
-│   ├── auth-guard.ts        <- étape 3
-│   └── budget-service.ts    <- étape 5
-├── layout/layout.ts         <- étape 4
-├── pages/
-│   ├── login/               <- étape 2
-│   ├── nouvelle-transaction/ <- étape 6
-│   ├── transactions/        <- étape 7
-│   ├── tableau-de-bord/     <- étape 8
-│   └── page-introuvable/    (fourni)
-├── app.config.ts            <- routeur + format français (fourni)
-└── app.routes.ts            <- les routes (étape 3)
-```
-
-L'architecture en couches :
-
-```text
-  Pages (login, tableau de bord, ...)     <- affichent, ne stockent rien
+  Composants (pages)    <- affichent, réagissent aux clics
         │ inject()
         ▼
-  Services métier (AuthService, BudgetService)  <- la logique et les signals
+  Services métier       <- état (signals) et logique
         │ inject()
         ▼
-  Stockage                                <- seul à toucher localStorage
+  Stockage              <- seul à toucher localStorage
 ```
 
-Une page ne touche **jamais** `localStorage` directement : elle passe par un service, qui passe par `Stockage`. Si demain on remplace `localStorage` par une API, seul `Stockage` change.
-
-*Question : ouvre `stockage.ts`. Pourquoi chaque appel est-il entouré d'un `try / catch` ?*
+Chaque couche ne parle qu'à celle juste en dessous.
 
 ---
 
-## Étape 1 : Le service d'authentification
+## 4. Maquettes
 
-Fichier : `core/auth-service.ts`.
+Le style est libre ; le contenu et le comportement doivent correspondre.
 
-1. Un signal **privé** `_utilisateur` (`Utilisateur | null`), initialisé avec ce que contient le stockage sous la clé `'mon-budget.session'` (ou `null`).
-2. Expose-le en lecture seule (`utilisateur`) et ajoute un `computed` `estConnecte`.
-3. `login(email, motDePasse)` : cherche le compte dans `COMPTES_DEMO`. S'il n'existe pas, renvoie `false`. Sinon, mets à jour le signal, écris `{ email, pseudo }` dans le stockage (**jamais le mot de passe !**) et renvoie `true`.
-4. `logout()` : remet le signal à `null` et supprime la clé du stockage.
+| Connexion | Erreurs de saisie | Identifiants incorrects |
+|---|---|---|
+| ![Connexion](captures/01-login.png) | ![Erreurs](captures/02-login-erreurs.png) | ![Échec](captures/03-login-echec.png) |
 
-> 💡 `private readonly stockage = inject(Stockage);` puis `signal<Utilisateur | null>(this.stockage.lire<Utilisateur>(CLE_SESSION))`.
+| Tableau de bord vide | Ajout d'une transaction |
+|---|---|
+| ![Tableau de bord vide](captures/04-tableau-vide.png) | ![Formulaire](captures/05-formulaire.png) |
 
-*Pas de résultat visible pour l'instant : tu le testeras à l'étape 2.*
+| Liste des transactions | Liste filtrée (dépenses + « lo ») |
+|---|---|
+| ![Transactions](captures/06-transactions.png) | ![Filtre](captures/07-transactions-filtre.png) |
 
----
-
-## Étape 2 : La page de connexion
-
-Fichiers : `pages/login/login.ts` et `login.html` (le CSS est fourni).
-
-1. Un signal `identifiants` (`{ email, motDePasse }`) et un formulaire `form()` :
-   * email : obligatoire, format valide ;
-   * mot de passe : obligatoire, 6 caractères minimum.
-2. Affiche les erreurs sous chaque champ quand il est touché et invalide.
-3. À la soumission : appelle `auth.login(...)`. Si ça échoue, affiche `"Email ou mot de passe incorrect."`. Si ça marche, navigue vers `/tableau-de-bord`.
-
-Va sur `http://localhost:4200/login` pour tester. Comptes de test : voir `core/comptes-demo.ts`.
-
-**Résultat attendu :**
-
-*Page de connexion :*
-
-![Page de connexion](captures/01-login.png)
-
-*Champs invalides :*
-
-![Erreurs de validation](captures/02-login-erreurs.png)
-
-*Identifiants incorrects :*
-
-![Échec de connexion](captures/03-login-echec.png)
-
-> 💡 Même squelette que l'inscription du projet 1 (exercice 5.1) : `imports: [FormField]`, `[formField]="formulaire.email"`, `event.preventDefault()`.
-
-*Question : connecte-toi, puis ouvre les outils de développement, onglet Application > Local Storage. Que vois-tu ? Recharge la page : es-tu toujours connecté ? Pourquoi ?*
+| Tableau de bord | Page 404 |
+|---|---|
+| ![Tableau de bord](captures/08-tableau-de-bord.png) | ![404](captures/09-introuvable.png) |
 
 ---
 
-## Étape 3 : Les guards
+## 5. Jalons conseillés
 
-Un **guard** est une fonction que le routeur appelle **avant** d'afficher une page. Elle renvoie `true` (on laisse passer) ou une redirection.
+Avance par petites étapes qui fonctionnent. À la fin de chaque jalon, l'application doit compiler et être utilisable.
 
-Fichier : `core/auth-guard.ts`.
+1. **Squelette** : les routes et des pages vides, la navigation fonctionne.
+2. **Authentification** : F1, puis F2.
+3. **Saisie** : F3 et F4, d'abord sans sauvegarde (les données disparaissent au rechargement).
+4. **Persistance** : F6.
+5. **Tableau de bord** : F5, puis F7.
+6. **Finitions** : relis les critères d'acceptation un par un.
 
-1. `authGuard` : si l'utilisateur est connecté, `true`. Sinon, redirige vers `/login`.
-2. `inviteGuard` : l'inverse. Si l'utilisateur est **déjà** connecté et va sur `/login`, redirige vers `/tableau-de-bord`.
-3. Dans `app.routes.ts`, ajoute `canActivate: [inviteGuard]` sur la route `login`, et `canActivate: [authGuard]` sur la route du `Layout` (qui contient toutes les pages connectées).
-
-> 💡 Un guard est une simple fonction, mais `inject()` y fonctionne :
-> ```ts
-> export const authGuard: CanActivateFn = () => {
->   const auth = inject(AuthService);
->   // ...
->   return inject(Router).createUrlTree(['/login']);
-> };
-> ```
-
-**Résultat attendu :** déconnecté, taper `http://localhost:4200/transactions` te renvoie sur `/login`. Connecté, taper `/login` te renvoie sur `/tableau-de-bord`.
-
-*Question : le guard protège-t-il vraiment les données ? Que pourrait faire un petit malin avec les outils de développement ?*
+Avant de coder, prends 15 minutes pour dessiner sur papier : quels composants, quels services, quelles routes, quelles données dans quels signals.
 
 ---
 
-## Étape 4 : Le layout
+## 6. Pistes si tu bloques
 
-Fichier : `layout/layout.ts`. C'est le cadre de toutes les pages connectées (le CSS est fourni).
+Pas de solution ici, seulement les bonnes pages de la doc :
 
-1. Ajoute les liens `Tableau de bord`, `Transactions` et `+ Ajouter` avec `routerLink` et `routerLinkActive="actif"`. Pour `Transactions`, ajoute `[routerLinkActiveOptions]="{ exact: true }"` (sinon, il resterait actif sur `/transactions/nouvelle`).
-2. Affiche le pseudo de l'utilisateur connecté.
-3. Un bouton `[Déconnexion]` qui appelle `auth.logout()` puis navigue vers `/login`.
-
-**Résultat attendu (après connexion) :**
-
-![Tableau de bord vide avec le layout](captures/04-tableau-vide.png)
-
-*Le contenu sous l'en-tête viendra à l'étape 8.*
-
----
-
-## Étape 5 : Le service de budget
-
-Fichier : `core/budget-service.ts`. Le cœur de l'app.
-
-1. Les transactions de chaque utilisateur sont stockées sous la clé `'mon-budget.transactions.' + email`.
-2. Elles doivent être **rechargées automatiquement** quand l'utilisateur change (connexion, déconnexion, changement de compte). C'est le job de `linkedSignal` : un signal **modifiable**, mais **recalculé** quand les signals qu'il lit changent.
-
-   ```ts
-   private readonly _transactions = linkedSignal<Transaction[]>(() => {
-     const utilisateur = this.auth.utilisateur();
-     return utilisateur ? (this.stockage.lire<Transaction[]>(this.cle()) ?? []) : [];
-   });
-   ```
-
-3. Expose `transactions` en lecture seule, puis les `computed` : `totalRevenus`, `totalDepenses`, `solde`, `depensesParCategorie` (tableau de `{ categorie, total, pourcentage }` trié du plus gros au plus petit).
-4. `ajouter(transaction)` (sans `id` : génère-le) et `supprimer(id)`. Chacune met à jour le signal **et** le stockage.
-
-> 💡 Le type `Omit<Transaction, 'id'>` veut dire « une Transaction sans le champ id ».
-> Pour l'id : `Math.max(0, ...this._transactions().map((t) => t.id)) + 1`.
-
-*Question : pourquoi un `computed` ne suffirait-il pas pour `_transactions` ? Et pourquoi un simple `signal` non plus ?*
+| Besoin | Où chercher |
+|---|---|
+| Protéger une route | [Route guards](https://angular.dev/guide/routing/route-guards) : `canActivate`, `CanActivateFn`, `Router.createUrlTree` |
+| Formater un montant ou une date | [Pipes](https://angular.dev/guide/templates/pipes) : `CurrencyPipe`, `DatePipe` |
+| Un signal modifiable qui se réinitialise quand un autre signal change (F6) | [linkedSignal](https://angular.dev/guide/signals/linked-signal) |
+| Un en-tête commun à plusieurs pages | Une route parente avec un `component` et des `children` |
+| Formulaires | [Signal Forms](https://angular.dev/essentials/signal-forms) |
+| Largeur d'une barre en pourcentage | Le binding de style : `[style.width.%]` |
 
 ---
 
-## Étape 6 : Ajouter une transaction
+## 7. Grille d'auto-évaluation
 
-Fichiers : `pages/nouvelle-transaction/nouvelle-transaction.ts` et `.html`.
-
-1. Un signal `brouillon` : `libelle` (`''`), `montant` (`0`), `type` (`'depense'`), `categorie` (`''`), `date` (aujourd'hui, au format `"2026-10-16"`).
-2. Validation : libellé obligatoire, montant ≥ 0,01, catégorie et date obligatoires.
-3. Le type se choisit avec **deux boutons radio** dans un `<fieldset>`.
-4. À la soumission : `budget.ajouter(...)` puis navigation vers `/transactions`.
-
-**Résultat attendu :**
-
-![Formulaire de nouvelle transaction](captures/05-formulaire.png)
-
-> 💡 Date du jour : `dateDuJour()` (fourni dans `core/date.ts`). Va voir pourquoi on n'utilise pas simplement `new Date().toISOString()`. Boutons radio : `<input type="radio" value="depense" [formField]="formulaire.type" />`.
-
----
-
-## Étape 7 : La liste des transactions
-
-Fichiers : `pages/transactions/ligne-transaction.ts` et `transactions.ts`.
-
-1. `LigneTransaction` reçoit une transaction (`input.required`) et émet `supprimer` avec son id (`output`). Elle affiche : la date (pipe `date: 'dd/MM/yyyy'`), le libellé, la catégorie, le montant signé (`-` ou `+`, pipe `currency: 'EUR'`) et un bouton 🗑️.
-2. `Transactions` affiche une `<app-ligne-transaction>` par transaction et appelle `budget.supprimer(...)` quand une ligne émet `supprimer`.
-3. Filtres : boutons `Tout` / `Revenus` / `Dépenses` + champ `Rechercher` (sur le libellé). Un `computed` `transactionsFiltrees`, trié par date (la plus récente en haut).
-4. `@empty` : `"Aucune transaction."` avec un lien vers le formulaire.
-
-**Résultat attendu :**
-
-*Après avoir ajouté 5 transactions :*
-
-![Liste des transactions](captures/06-transactions.png)
-
-*Filtre Dépenses + recherche "lo" :*
-
-![Liste filtrée](captures/07-transactions-filtre.png)
-
-> 💡 Les pipes s'importent comme des composants : `imports: [CurrencyPipe, DatePipe]`. Le format français (`1 500,00 €`) vient de `LOCALE_ID` dans `app.config.ts`, va voir.
+| Critère | Points |
+|---|---|
+| F1 Connexion | 3 |
+| F2 Pages protégées et déconnexion | 3 |
+| F3 Ajout de transaction | 2 |
+| F4 Liste, filtres, suppression | 3 |
+| F5 Tableau de bord | 3 |
+| F6 Données par utilisateur | 2 |
+| F7 Page 404 | 1 |
+| Contraintes techniques respectées | 2 |
+| Code lisible : noms clairs, petites fonctions, pas de code mort | 1 |
+| **Total** | **20** |
 
 ---
 
-## Étape 8 : Le tableau de bord
+## 8. Bonus
 
-Fichier : `pages/tableau-de-bord/tableau-de-bord.ts` (le CSS est fourni).
+* **Modifier une transaction** : une route avec l'id en paramètre, qui réutilise le formulaire prérempli.
+* **Budget mensuel** : un plafond de dépenses et une alerte quand il est dépassé.
+* **Filtre par mois** sur la liste et le tableau de bord.
+* **Lazy loading** des pages avec `loadComponent`.
+* **Export CSV** des transactions.
+* **Tests unitaires** de tes services (`ng test`).
 
-1. `"Bonjour <pseudo>"`.
-2. Trois cartes : **Solde** (vert si positif, rouge si négatif), **Revenus**, **Dépenses**, avec le pipe `currency`.
-3. Si le solde est négatif : `"Attention : ton solde est négatif."`.
-4. **Dépenses par catégorie** : une ligne par catégorie avec une barre dont la largeur vaut le pourcentage (`[style.width.%]="ligne.pourcentage"`).
-
-**Résultat attendu :**
-
-![Tableau de bord](captures/08-tableau-de-bord.png)
-
----
-
-## Vérification finale
-
-* [ ] Déconnecté, toute page renvoie vers `/login`.
-* [ ] Connecté, `/login` renvoie vers le tableau de bord.
-* [ ] Après un rechargement, on est toujours connecté et les transactions sont toujours là.
-* [ ] Le compte `bob@budget.fr` ne voit pas les transactions de `alice@budget.fr`.
-* [ ] Une URL inconnue affiche la page 404 :
-
-![Page 404](captures/09-introuvable.png)
-
----
-
-## Bonus
-
-* **Modifier une transaction** : une route `transactions/:id` qui réutilise le formulaire, prérempli (`input()` lié au paramètre de route grâce à `withComponentInputBinding()`).
-* **Budget mensuel** : l'utilisateur fixe un plafond de dépenses ; une barre passe au rouge quand il est dépassé.
-* **Filtre par mois** : un `<input type="month">` qui filtre la liste et le tableau de bord.
-* **Lazy loading** : remplace `component: TableauDeBord` par `loadComponent: () => import('./pages/tableau-de-bord/tableau-de-bord').then((m) => m.TableauDeBord)` et observe l'onglet Réseau.
-* **Export CSV** : un bouton qui télécharge les transactions au format CSV.
-
----
-
-🏆 **Bravo !** Tu viens de coder une vraie application Angular de A à Z.
+Une fois terminé, compare avec `solutions/` : il y a plusieurs bonnes façons de faire, la solution fournie n'en est qu'une.
