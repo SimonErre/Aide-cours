@@ -27,7 +27,7 @@ Ces exercices suivent les notions de base de la documentation officielle ([angul
 ### Comment est organisé ce dossier ?
 
 ```text
-Angular/
+Angular/projet-1-brainrot/
 ├── base-project/              <- TON projet : les squelettes à compléter (// TODO)
 │   ├── SUJET.md               <- ce cahier
 │   └── captures/              <- les résultats attendus
@@ -53,7 +53,7 @@ npm install -g @angular/cli
 Installe les dépendances du projet de départ (une seule fois) :
 
 ```bash
-cd Angular/base-project
+cd Angular/projet-1-brainrot/base-project
 npm install
 ```
 
@@ -67,7 +67,7 @@ Ouvre `http://localhost:4200` dans ton navigateur. Laisse `ng serve` tourner : �
 
 **Résultat attendu :** le menu des exercices s'affiche, la page de l'exercice 1.1 est vide.
 
-*Pour comparer avec le corrigé : même chose dans `Angular/solutions`, avec `ng serve --port 4201` pour pouvoir lancer les deux en même temps.*
+*Pour comparer avec le corrigé : même chose dans `Angular/projet-1-brainrot/solutions`, avec `ng serve --port 4201` pour pouvoir lancer les deux en même temps.*
 
 ### Exercice 0.2 : Explorer la map
 
