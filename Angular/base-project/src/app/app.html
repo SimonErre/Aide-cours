@@ -1,0 +1,12 @@
+<aside>
+  <h1>Aventure Angular</h1>
+  <nav>
+    @for (exercice of exercices; track exercice.path) {
+      <a [routerLink]="exercice.path" routerLinkActive="actif">{{ exercice.title }}</a>
+    }
+  </nav>
+</aside>
+
+<main>
+  <router-outlet />
+</main>

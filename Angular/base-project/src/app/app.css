@@ -1,0 +1,36 @@
+:host {
+  display: flex;
+  min-height: 100vh;
+}
+
+aside {
+  width: 16rem;
+  padding: 1rem;
+  background: #2b2118;
+  color: #f3e9dc;
+}
+
+aside h1 {
+  font-size: 1.2rem;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+}
+
+nav a {
+  padding: 0.2rem 0.5rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+nav a.actif {
+  background: #c08552;
+  border-radius: 4px;
+}
+
+main {
+  flex: 1;
+  padding: 1rem 2rem;
+}

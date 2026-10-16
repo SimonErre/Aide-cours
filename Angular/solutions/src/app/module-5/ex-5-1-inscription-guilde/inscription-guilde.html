@@ -1,0 +1,52 @@
+<form (submit)="soumettre($event)">
+  <label>
+    Pseudo :
+    <input [formField]="formulaire.pseudo" />
+  </label>
+  @if (formulaire.pseudo().touched() && formulaire.pseudo().invalid()) {
+    @for (erreur of formulaire.pseudo().errors(); track erreur.kind) {
+      <p class="erreur">⚠ {{ erreur.message }}</p>
+    }
+  }
+
+  <label>
+    Email :
+    <input type="email" [formField]="formulaire.email" />
+  </label>
+  @if (formulaire.email().touched() && formulaire.email().invalid()) {
+    @for (erreur of formulaire.email().errors(); track erreur.kind) {
+      <p class="erreur">⚠ {{ erreur.message }}</p>
+    }
+  }
+
+  <label>
+    Niveau :
+    <input type="number" [formField]="formulaire.niveau" />
+  </label>
+  @if (formulaire.niveau().touched() && formulaire.niveau().invalid()) {
+    @for (erreur of formulaire.niveau().errors(); track erreur.kind) {
+      <p class="erreur">⚠ {{ erreur.message }}</p>
+    }
+  }
+
+  <label>
+    Classe :
+    <select [formField]="formulaire.classe">
+      <option value="">-- Choisir --</option>
+      @for (classe of classes; track classe) {
+        <option [value]="classe">{{ classe }}</option>
+      }
+    </select>
+  </label>
+  @if (formulaire.classe().touched() && formulaire.classe().invalid()) {
+    @for (erreur of formulaire.classe().errors(); track erreur.kind) {
+      <p class="erreur">⚠ {{ erreur.message }}</p>
+    }
+  }
+
+  <button type="submit" [disabled]="formulaire().invalid()">Rejoindre la guilde</button>
+</form>
+
+@if (bienvenue()) {
+  <p class="bienvenue">{{ bienvenue() }}</p>
+}

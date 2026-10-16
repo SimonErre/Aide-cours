@@ -56,3 +56,9 @@ dotnet run
 ```
 
 Bon courage, et amuse-toi bien ! 🎮
+
+---
+
+## 🅰️ Bonus : Angular
+
+Un parcours séparé pour découvrir le framework web Angular t'attend dans le dossier [`Angular/`](./Angular/base-project/SUJET.md) : cahier d'exercices, projet de départ (`Angular/base-project`) et corrigés (`Angular/solutions`).
