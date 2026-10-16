@@ -62,3 +62,5 @@ Bon courage, et amuse-toi bien ! 🎮
 ## 🅰️ Bonus : Angular
 
 Un parcours séparé pour découvrir le framework web Angular t'attend dans le dossier [`Angular/`](./Angular/base-project/SUJET.md) : cahier d'exercices, projet de départ (`Angular/base-project`) et corrigés (`Angular/solutions`).
+
+Une fois ce cahier terminé, enchaîne avec le [projet 2 : Mon Budget](./Angular/projet-2-budget/base-project/SUJET.md), une petite application de gestion de budget avec connexion.

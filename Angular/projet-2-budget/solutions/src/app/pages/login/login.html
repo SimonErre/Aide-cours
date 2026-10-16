@@ -1,0 +1,29 @@
+<form class="carte" (submit)="connecter($event)">
+  <h1>Mon Budget</h1>
+
+  <label>
+    Email
+    <input type="email" [formField]="formulaire.email" />
+  </label>
+  @if (formulaire.email().touched() && formulaire.email().invalid()) {
+    @for (erreur of formulaire.email().errors(); track erreur.kind) {
+      <p class="erreur">⚠ {{ erreur.message }}</p>
+    }
+  }
+
+  <label>
+    Mot de passe
+    <input type="password" [formField]="formulaire.motDePasse" />
+  </label>
+  @if (formulaire.motDePasse().touched() && formulaire.motDePasse().invalid()) {
+    @for (erreur of formulaire.motDePasse().errors(); track erreur.kind) {
+      <p class="erreur">⚠ {{ erreur.message }}</p>
+    }
+  }
+
+  @if (echec()) {
+    <p class="erreur">Email ou mot de passe incorrect.</p>
+  }
+
+  <button type="submit" [disabled]="formulaire().invalid()">Se connecter</button>
+</form>

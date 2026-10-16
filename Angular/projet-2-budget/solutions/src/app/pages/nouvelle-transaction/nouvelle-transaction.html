@@ -1,0 +1,51 @@
+<h2>Nouvelle transaction</h2>
+
+<form class="carte" (submit)="enregistrer($event)">
+  <label>
+    Libellé
+    <input [formField]="formulaire.libelle" />
+  </label>
+  @if (formulaire.libelle().touched() && formulaire.libelle().invalid()) {
+    @for (erreur of formulaire.libelle().errors(); track erreur.kind) {
+      <p class="erreur">⚠ {{ erreur.message }}</p>
+    }
+  }
+
+  <label>
+    Montant (€)
+    <input type="number" step="0.01" [formField]="formulaire.montant" />
+  </label>
+  @if (formulaire.montant().touched() && formulaire.montant().invalid()) {
+    @for (erreur of formulaire.montant().errors(); track erreur.kind) {
+      <p class="erreur">⚠ {{ erreur.message }}</p>
+    }
+  }
+
+  <fieldset>
+    <legend>Type</legend>
+    <label><input type="radio" value="depense" [formField]="formulaire.type" /> Dépense</label>
+    <label><input type="radio" value="revenu" [formField]="formulaire.type" /> Revenu</label>
+  </fieldset>
+
+  <label>
+    Catégorie
+    <select [formField]="formulaire.categorie">
+      <option value="">-- Choisir --</option>
+      @for (categorie of categories; track categorie) {
+        <option [value]="categorie">{{ categorie }}</option>
+      }
+    </select>
+  </label>
+  @if (formulaire.categorie().touched() && formulaire.categorie().invalid()) {
+    @for (erreur of formulaire.categorie().errors(); track erreur.kind) {
+      <p class="erreur">⚠ {{ erreur.message }}</p>
+    }
+  }
+
+  <label>
+    Date
+    <input type="date" [formField]="formulaire.date" />
+  </label>
+
+  <button type="submit" [disabled]="formulaire().invalid()">Enregistrer</button>
+</form>

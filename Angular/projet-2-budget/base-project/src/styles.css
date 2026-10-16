@@ -1,0 +1,38 @@
+/* Global styles shared by every page. */
+:root {
+  --primaire: #1f5f8b;
+  --vert: #2e7d32;
+  --rouge: #c62828;
+  --gris: #f4f1f8;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  background: var(--gris);
+}
+
+button {
+  cursor: pointer;
+}
+
+.carte {
+  padding: 1rem 1.5rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 15%);
+}
+
+.erreur {
+  margin: 0;
+  color: var(--rouge);
+}
+
+.revenu {
+  color: var(--vert);
+}
+
+.depense {
+  color: var(--rouge);
+}
